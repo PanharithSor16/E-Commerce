@@ -1,0 +1,41 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+
+# Backend (Maven / IDE)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
+*.log
+.idea/
+*.iml
+.vscode/
+!.vscode/extensions.json
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/coverage/
+frontend/playwright-report/
+frontend/test-results/
+frontend/next-env.d.ts
+*.tsbuildinfo
+
+# Uploads and local data
+uploads/
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes / local infra
+backups/
+infra/certs/
+.env.*.local

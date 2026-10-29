@@ -1,0 +1,24 @@
+# Production: HTTPS behind a reverse proxy, no Swagger UI, JSON logs.
+spring:
+  flyway:
+    # Migrations run with the DDL-capable login; the application itself uses the DML-only login.
+    user: ${DB_MIGRATOR_USER}
+    password: ${DB_MIGRATOR_PASSWORD}
+
+springdoc:
+  api-docs:
+    enabled: ${APP_API_DOCS_ENABLED:false}
+  swagger-ui:
+    enabled: ${APP_API_DOCS_ENABLED:false}
+
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    org.hibernate.SQL: WARN
+
+app:
+  security:
+    cookie-secure: true
+    session-cookie-name: __Host-sid

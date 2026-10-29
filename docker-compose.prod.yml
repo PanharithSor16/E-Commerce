@@ -1,0 +1,31 @@
+# Production overlay: HTTPS on nginx, no database port on the host, Stripe payments.
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+services:
+  sqlserver:
+    ports: !reset []
+    environment:
+      MSSQL_PID: ${MSSQL_PID:-Express}   # set your licensed edition
+
+  mailpit:
+    profiles: ["dev"]   # use a real SMTP relay in production (MAIL_HOST etc.)
+
+  backend:
+    environment:
+      APP_REQUIRE_VERIFIED_EMAIL: "true"
+      PAYMENT_PROVIDER: ${PAYMENT_PROVIDER:-STRIPE}
+      MAIL_HOST: ${MAIL_HOST:?set MAIL_HOST for production}
+
+  nginx:
+    ports: !override
+      - "80:80"
+      - "443:443"
+    environment:
+      PUBLIC_HOSTNAME: ${PUBLIC_HOSTNAME:?set PUBLIC_HOSTNAME, e.g. shop.example.com}
+    volumes: !override
+      - ./infra/nginx/tls.conf:/etc/nginx/templates/default.conf.template:ro
+      - ./infra/nginx/proxy_common.inc:/etc/nginx/conf.d/proxy_common.inc:ro
+      - ${TLS_CERT_DIR:-./infra/certs}:/etc/nginx/certs:ro
+      - certbot-www:/var/www/certbot
+
+volumes:
+  certbot-www: {}

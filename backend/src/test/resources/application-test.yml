@@ -1,0 +1,28 @@
+# Integration tests: datasource comes from the Testcontainers SQL Server (@ServiceConnection).
+spring:
+  datasource:
+    username: unused-overridden-by-testcontainers
+    password: unused-overridden-by-testcontainers
+  mail:
+    host: localhost
+    port: 1
+
+logging:
+  level:
+    root: WARN
+    com.org.ecommerce: INFO
+    org.testcontainers: INFO
+
+app:
+  security:
+    cookie-secure: false
+    session-cookie-name: sid
+    email-hash-key: dGVzdC1vbmx5LWVtYWlsLWhhc2gta2V5LTMyLWJ5dGVzISE=
+    require-verified-email-for-checkout: false
+    auth-rate-limit-per-minute: 10000
+    analytics-rate-limit-per-minute: 10000
+  bootstrap-admin:
+    email: admin@test.local
+    password: Admin_Test_Passw0rd!
+  storage:
+    upload-dir: target/test-uploads

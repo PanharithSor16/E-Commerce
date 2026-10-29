@@ -1,0 +1,32 @@
+# Local development: HTTP, Swagger UI enabled, human-readable logs.
+spring:
+  datasource:
+    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};databaseName=${DB_NAME:ecommerce};encrypt=true;trustServerCertificate=true;sendTimeAsDatetime=false;sendStringParametersAsUnicode=false
+    username: ${DB_APP_USER:sa}
+    password: ${DB_APP_PASSWORD:Dev_Str0ng!Passw0rd}
+  flyway:
+    # Dev only: also load demo catalog data (repeatable, idempotent).
+    locations: classpath:db/migration,classpath:db/seed
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+logging:
+  level:
+    com.org.ecommerce: DEBUG
+
+app:
+  security:
+    cookie-secure: false
+    session-cookie-name: sid
+    # Dev-only key; production must provide APP_SECURITY_EMAIL_HASH_KEY.
+    email-hash-key: ${APP_SECURITY_EMAIL_HASH_KEY:ZGV2LW9ubHktZW1haWwtaGFzaC1rZXktMzItYnl0ZXMhIQ==}
+    require-verified-email-for-checkout: ${APP_REQUIRE_VERIFIED_EMAIL:false}
+    # Local testing sends every request from 127.0.0.1.
+    auth-rate-limit-per-minute: ${APP_AUTH_RATE_LIMIT:200}
+  bootstrap-admin:
+    email: ${APP_BOOTSTRAP_ADMIN_EMAIL:admin@example.com}
+    password: ${APP_BOOTSTRAP_ADMIN_PASSWORD:Admin_Passw0rd!}
